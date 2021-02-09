@@ -1,29 +1,64 @@
 html, body{
   margin: 0;
   padding: 0;
+  background: gray;
 }
 
 *{
   box-sizing: border-box;
 }
+
 main{
-  
+  height: 100vh;
+  display: flex;
+  align-items: center;
 }
 
 .calc{
+  position: relative;
   height:731px;
   width: 411px;
-  background: lightgray;
-  padding: 5px;
-  border-radius: 30px;
+  background: white;
   margin: auto;
+  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.192);
 }
-
+#separator{
+  height: 1px;
+  width: 70%;
+  margin: auto;
+  background: gray;
+}
 .calc__buttons-container{
+  position: relative;
+  background-color: white;
+  z-index: 1;
+  padding: 20px;
   bottom: 0;
   width: 100%;
   height: 50%;
   display: grid;
-  gap: 5px;
+  gap: 20px;
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
+
+.calc__scientific-modifiers{
+  position: absolute;
+  z-index: 0;
+  transform: translateY(-25px);
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  #sci-open-button{
+    grid-row: 1;
+    grid-column: 2/4;
+  }
+  
+  #bracket, #sqrt, #pi, #exp{
+    grid-row: 2;
+  }
+  #sin, #cos, #tan, #eul{
+    grid-row: 3;
+  }
+}
+

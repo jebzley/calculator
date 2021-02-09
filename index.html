@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles/styles.css">
   <title>Document</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Lexend+Mega&family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet"> 
 </head>
 <body>
 
@@ -15,8 +18,20 @@
         <div class="calc__display-background"></div>
       </div>
 
+      <div id="separator"></div>
+      <div class = "calc__scientific-modifiers" id="scientific-modifiers">
+        <button class="calc__button"id="sci-open-button">+</button>
+        <button class = "calc__scientific-button" id = "bracket">()</button>
+        <button class = "calc__scientific-button" id = "sqrt">sqrt</button>
+        <button class = "calc__scientific-button" id = "pi">pi</button>
+        <button class = "calc__scientific-button" id = "exp">^</button>
+        <button class = "calc__scientific-button" id = "sin">sin</button>
+        <button class = "calc__scientific-button" id = "cos">cos</button>
+        <button class = "calc__scientific-button" id = "tan">tan</button>
+        <button class = "calc__scientific-button" id = "eul">e</button>
+      </div>
       <div class="calc__buttons-container" id="buttons-container">
-        <button class = "calc__button calc__operator" id = delete>DEL</button>
+        <button class = "calc__button calc__operator" id = "delete">DEL</button>
         <button class = "calc__button calc__operator" id = "minus-toggle">-/+</button>
         <button class = "calc__button calc__operator" id = "percent">%</button>
         <button class = "calc__button calc__operator" id = "divide">/</button>
