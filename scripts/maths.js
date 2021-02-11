@@ -11,6 +11,7 @@ let currentNumber = "";
 let currentTotal = "";
 let previousCalculation = "";
 let previousTotal = "";
+let displayCalculation = "";
 
 // TODO
 // add % button
@@ -34,20 +35,18 @@ buttonElements.forEach((button) => {
     const clickedButtonValue = event.target.value;
     console.log("clicked = " + clickedButtonValue);
 
-
-
-
     // if there is already a total value stored, save it in case user wants to use it in next calculation
     if (currentTotal != '') {
       previousCalculation = currentCalculation;
       previousTotal = currentTotal;
 
       // if there is already a total value AND the user hits an operator, put previous total at the start of current calc
-      if (event.target.className == "calc__button calc__operator") currentCalculation = previousTotal;
-      else currentCalculation = '';
+      if (event.target.className == "calc__button calc__operator") currentNumber = previousTotal;
+      else currentNumber = '';
 
       // clear current total and wipe HTML elements
       currentTotal = '';
+      displayCalculation = '';
       outputCalcArea.innerHTML = null;
       outputEqualsArea.innerHTML = null;
       outputTotalArea.innerHTML = null;
@@ -57,6 +56,7 @@ buttonElements.forEach((button) => {
 
     //if user clicks AC button, clear all data
     if (clickedButtonValue == "delete") {
+      currentNumber = '';
       currentCalculation = '';
       currentTotal = '';
       outputCalcArea.innerHTML = null;
@@ -64,12 +64,17 @@ buttonElements.forEach((button) => {
       outputTotalArea.innerHTML = null;
     }
 
-
-
-    // is it equals?
+    //if it's =
     else if (clickedButtonValue == "=") {
-      // store the total
+      //  add the NUMBER to the CALCULATION
+      currentCalculation += currentNumber;
+      console.log(currentCalculation);
+
+      //  run the expression of CALCULATION and store it in TOTAL
       currentTotal = eval(currentCalculation);
+      console.log("Total = " + currentTotal);
+      // store the total
+      
       // and print it to the display
       outputTotalArea.innerHTML = currentTotal;
       // with a nice equals symbol
@@ -77,14 +82,73 @@ buttonElements.forEach((button) => {
       // and clear the current calculation
       currentCalculation = "";
     }
-    //is it a number or an operator?
-    else {
-      //add it to a string
+
+    //if it's percent
+    else if (clickedButtonValue == "%"){
+      //print it on screen
+      displayCalculation += event.target.value;
+      outputCalcArea.innerHTML = displayCalculation;
+
+      // split the string into an array
+      let splitCalc = currentCalculation.split('');
+      // if the last element is a times or divide symbol, return as a fraction
+      if(splitCalc[splitCalc.length-1] == '*' || splitCalc[splitCalc.length-1] == '/' ){
+        currentNumber = currentNumber / 100;
+      }
+
+      // if the last element is plus or minus, return the calculation so far as a fraction
+      else if(splitCalc[splitCalc.length-1] == '+' || splitCalc[splitCalc.length-1] == '-' ){
+        let throwawayOperator = splitCalc.pop();
+        currentNumber = eval(splitCalc.join('')) * currentNumber/ 100;
+      }
+
+      console.log(currentNumber);
+    }
+    
+    //if it's an operator 
+    else if (event.target.className == "calc__button calc__operator"){
+      
+      //  add NUMBER to CALCULATION
+      currentCalculation += currentNumber;
+      //  add operator to CALCULATION
       currentCalculation += clickedButtonValue;
-      outputCalcArea.innerHTML = currentCalculation;
+      console.log('currentCalculation = ' + currentCalculation);
+      //  clear NUMBER string
+      currentNumber = '';
+      console.log("currentNumber cleared.");
+
+      displayCalculation += event.target.value;
+      outputCalcArea.innerHTML = displayCalculation;
+    }
+    
+    
+    else {
+      //if it's a number, add it to NUMBER string
+      currentNumber += clickedButtonValue;
+      console.log('currentNumber = ' + currentNumber);
+
+      displayCalculation += event.target.value;
+      outputCalcArea.innerHTML = displayCalculation;
     }
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //PERCENTAGE CALCULATOR

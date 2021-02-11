@@ -15,7 +15,7 @@
   }
 }
 
-.calc__operator{
+.calc__operator, #percent{
   color: $accent-colour;
   font-weight: 900;
 }
@@ -30,6 +30,7 @@
   background: $accent-colour;
   color: white;
 }
+
 
 #sci-open-button{
   background-color: $accent-colour;
