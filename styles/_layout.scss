@@ -21,6 +21,7 @@ main{
   background: white;
   margin: auto;
   box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 30px;
 }
 #separator{
   height: 1px;
@@ -40,31 +41,6 @@ main{
   gap: 20px;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   border-radius:
-   20px 20px 0 0;
-}
-
-.calc__scientific-modifiers{
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  gap: 10px;
-  position: absolute;
-  z-index: 0;
-  transform: translateY(-30px);
-  width: 100%;
-  background: $accent-colour;
-  border-radius:
-   20px 20px 0 0;
-  #sci-open-button{
-    grid-row: 1;
-    grid-column: 1/-1;
-  }
-  
-  #bracket, #sqrt, #pi, #exp{
-    grid-row: 2;
-  }
-  #sin, #cos, #tan, #eul{
-    grid-row: 3;
-  }
+   30px;
 }
 
