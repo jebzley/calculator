@@ -1,81 +1,75 @@
-<!-- 
-        @@@@@@           @@@@@@
-        @@@@@@@@@@       @@@@@@@@@@
-      @@@@@@@@@@@@@@   @@@@@@@@@@@@@@
-    @@@@@@@@@@@@@@@@@ @@@@@@@@@@@@@@@@@
-   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-     @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        @@@@@@@@@@@@@@@@@@@@@@@@@@@
-          @@@@@@@@@@@@@@@@@@@@@@@
-            @@@@@@@@@@@@@@@@@@@
-              @@@@@@@@@@@@@@@
-                @@@@@@@@@@@
-                  @@@@@@@
-                    @@@
-                     @ -->
-
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles/styles.css">
-  <title>Seb Lee's Calculator</title>
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet"> 
-<script src="scripts/maths.js" async defer></script>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/styles.css" />
+    <title>Seb Lee's Calculator</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="scripts/maths.js" async defer></script>
+  </head>
+  <body>
+    <main>
+      <div class="calc" id="calc-container">
+        <div div class="display__container" id="display-container">
+          <p id="output-prev-total"></p>
+          <div class="display__area" id="output-display-calculation-area">
+            <p id="output-display-calculation"></p>
+          </div>
+          <div class="display__area" id="output-display-equals-area">
+            <p id="output-display-equals"></p>
+          </div>
+          <div class="display__area" id="output-display-total-area">
+            <p id="output-display-total"></p>
+          </div>
+        </div>
 
-  <main>
-    <div class = "calc" id="calc-container">
-      <div div class="display__container" id="display-container">
-        <p id="output-prev-total"></p>
-        <div class="display__area" id="output-display-calculation-area">
-          <p id="output-display-calculation"></p>
-        </div>
-        <div class="display__area" id="output-display-equals-area">
-          <p id="output-display-equals"></p>
-        </div>
-        <div class="display__area" id="output-display-total-area">
-          <p id="output-display-total"></p>
+        <div id="separator"></div>
+
+        <div class="calc__buttons-container" id="buttons-container">
+          <button class="calc__button" id="delete" value="delete">
+            AC
+          </button>
+          <button class="calc__button calc__operator" id="exponent" value="^">
+            ^
+          </button>
+          <button class="calc__button" id="percent" value="%">%</button>
+          <button class="calc__button calc__operator" id="divide" value="/">
+            &divide;
+          </button>
+          <button class="calc__button" id="7" value="7">7</button>
+          <button class="calc__button" id="8" value="8">8</button>
+          <button class="calc__button" id="9" value="9">9</button>
+          <button class="calc__button calc__operator" id="multiply" value="*">
+            &times;
+          </button>
+          <button class="calc__button" id="4" value="4">4</button>
+          <button class="calc__button" id="5" value="5">5</button>
+          <button class="calc__button" id="6" value="6">6</button>
+          <button class="calc__button calc__operator" id="minus" value="-">
+            &minus;
+          </button>
+          <button class="calc__button" id="1" value="1">1</button>
+          <button class="calc__button" id="2" value="2">2</button>
+          <button class="calc__button" id="3" value="3">3</button>
+          <button class="calc__button calc__operator" id="plus" value="+">
+            &plus;
+          </button>
+          <button class="calc__button calc__operator" id="decimal" value=".">
+            .
+          </button>
+          <button class="calc__button" id="0" value="0">0</button>
+          <button class="calc__button" id="brackets" value="brackets">
+            ()
+          </button>
+          <button class="calc__button" id="equals" value="=">=</button>
         </div>
       </div>
-
-      <div id="separator"></div>
-
-      <div class="calc__buttons-container" id="buttons-container">
-        <button class = "calc__button" id = "delete" value="delete">AC</button>
-        <button class = "calc__button calc__operator" id = "exponent" value="^">^</button>
-        <button class = "calc__button" id = "percent" value="%">%</button>
-        <button class = "calc__button calc__operator" id = "divide" value="/">&divide;</button>
-        <button class = "calc__button" id = "7" value="7">7</button>
-        <button class = "calc__button" id = "8" value="8">8</button>
-        <button class = "calc__button" id = "9" value="9">9</button>
-        <button class = "calc__button calc__operator" id = "multiply" value="*">&times;</button>
-        <button class = "calc__button" id = "4" value="4">4</button>
-        <button class = "calc__button" id = "5" value="5">5</button>
-        <button class = "calc__button" id = "6" value="6">6</button>
-        <button class = "calc__button calc__operator" id = "minus" value="-">&minus;</button>
-        <button class = "calc__button" id = "1" value="1">1</button>
-        <button class = "calc__button" id = "2" value="2">2</button>
-        <button class = "calc__button" id = "3" value="3">3</button>
-        <button class = "calc__button calc__operator" id = "plus" value="+">&plus;</button>
-        <button class = "calc__button calc__operator" id = "decimal" value=".">.</button>
-        <button class = "calc__button" id = "0" value="0">0</button>
-        <button class = "calc__button" id = "brackets" value = "brackets">()</button>
-        <button class = "calc__button" id = "equals" value="=">=</button>
-      </div>
-    </div>
-  </main>
-  
-</body>
+    </main>
+  </body>
 </html>
