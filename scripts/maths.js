@@ -159,6 +159,9 @@ const clearDisplay = () => {
 
 // -------------------------------------------------------------------------
 // ** CALCULATOR STARTS HERE **
+const processUserInput = (buttonElements)
+
+processUserInput(document.querySelectorAll(".calc__button"), )
 buttonElements.forEach((button) => {
   button.addEventListener("click", (event) => {
     const clickedButtonValue = event.target.value;
