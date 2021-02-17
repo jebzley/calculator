@@ -1,46 +1,14 @@
 // ** TODO **
-// frontend niceness: fix screen overflow for large numbers 
+// IMPORTANT: make (x)y work
+// IMPORTANT: allow calculations to start with negative numbers
+// frontend niceness: fix screen overflow for large numbers
 // frontend niceness: make fullscreen on tablet/mobile
-// TIDY UP. reformat as switch/case. could help you solve below issue.
-// make (x)y work
+// make README file
+// have separate file for mathematical functions that imports into display file
 // make = perform the same calculation again on the result
-// add scientific operators
+// Refactor handleButtonPress() as switch/case.
 
-//---------------------------------------------------------------------------
-
-// ** VARIABLE DEFINITONS **
-
-const buttonElements = document.querySelectorAll(".calc__button");
-const outputDisplay = document.getElementById("output-display");
-const outputCalcArea = document.getElementById("output-display-calculation");
-const outputEqualsArea = document.getElementById("output-display-equals");
-const outputTotalArea = document.getElementById("output-display-total");
-const previousCalcArea = document.getElementById("output-prev-total");
-
-let currentCalculation = "";
-let currentNumber = "";
-let currentTotal = "";
-let previousCalculation = "";
-let previousTotal = "";
-let displayCalculation = "";
-let bracketClosed = true;
-
-// ** FUNCTION DECLARATIONS **
-
-const formatDisplayCalculation = (stringForScreen) => {
-  return stringForScreen
-    .split("")
-    .map((digit) => {
-      if (digit == "*")
-        return (digit = ' <span class="display__operator">&times;</span> ');
-      else if (digit == "/")
-        return (digit = ' <span class="display__operator">&divide;</span> ');
-      else if (digit == "-" || digit == "+" || digit == "^" || digit == "%")
-        return ` <span class="display__operator">${digit}</span> `;
-      else return digit;
-    })
-    .join("");
-};
+//--------------------- MATHEMATICAL FUNCTIONS ---------------------
 
 const parseStringAsCalculationArray = (calcString) => {
   calcArray = [];
@@ -91,13 +59,11 @@ const calculate = (arrayToBeCalculated) => {
 
 const calculatePercentage = (currentCalculation, currentNumber) => {
   let splitCalc = currentCalculation.split("");
-  // if the last element is a times or divide symbol, return as a fraction
   if (
     splitCalc[splitCalc.length - 1] == "*" ||
     splitCalc[splitCalc.length - 1] == "/"
   )
     return currentNumber / 100;
-  // if the last element is plus or minus, return the calculation so far as a fraction
   else if (
     splitCalc[splitCalc.length - 1] == "+" ||
     splitCalc[splitCalc.length - 1] == "-"
@@ -111,17 +77,9 @@ const calculatePercentage = (currentCalculation, currentNumber) => {
   }
 };
 
-const processBrackets = () => {
-  if (bracketClosed) {
-    currentNumber += "(";
-    displayCalculation += "(";
-    bracketClosed = false;
-  } else {
-    currentNumber += ")";
-    displayCalculation += ")";
-    bracketClosed = true;
-  }
-};
+const processBrackets = (bracketOpen) => (bracketOpen ? "(" : ")");
+
+const openAndCloseBrackets = (bracketOpen) => (bracketOpen ? false : true);
 
 const allowBracketAsMultiplier = (currentCalculation) => {
   let splitCalc = currentCalculation.split("");
@@ -130,7 +88,6 @@ const allowBracketAsMultiplier = (currentCalculation) => {
     if (splitCalc[i] == ")" && !isNaN(splitCalc[i + 1])) splitCalc[i] = ")*";
     else splitCalc[i] = splitCalc[i];
   }
-  console.log(splitCalc);
   return splitCalc.join("");
 };
 
@@ -138,112 +95,167 @@ const calculateBrackets = (currentCalculation) => {
   if (currentCalculation.includes(")")) {
     if (currentCalculation[1] == "(") {
       let splitCalc = currentCalculation.split(/[()]/g);
-      //splitCalc[0] = splitCalc[0].substring(1);
       splitCalc[0] = calculate(parseStringAsCalculationArray(splitCalc[1]));
       return splitCalc.join("");
     } else {
       let splitCalc = currentCalculation.split(/[()]/g);
-      //splitCalc[1] = splitCalc[1].substring(0, splitCalc[1].length - 1);
       splitCalc[1] = calculate(parseStringAsCalculationArray(splitCalc[1]));
       return splitCalc.join("");
     }
   } else return currentCalculation;
 };
 
-const clearDisplay = () => {
-  displayCalculation = "";
+//--------------------- DISPLAY/RENDERING FUNCTIONS ---------------------
+
+const formatDisplayCalculation = (stringForScreen) => {
+  return stringForScreen
+    .split("")
+    .map((digit) => {
+      if (digit == "*")
+        return (digit = ' <span class="display__operator">&times;</span> ');
+      else if (digit == "/")
+        return (digit = ' <span class="display__operator">&divide;</span> ');
+      else if (digit == "-" || digit == "+" || digit == "^" || digit == "%")
+        return ` <span class="display__operator">${digit}</span> `;
+      else return digit;
+    })
+    .join("");
+};
+
+const clearDisplay = (
+  outputCalcArea,
+  outputEqualsArea,
+  outputTotalArea
+) => {
   outputCalcArea.innerHTML = null;
   outputEqualsArea.innerHTML = null;
   outputTotalArea.innerHTML = null;
+  return  "";
 };
 
-// -------------------------------------------------------------------------
-// ** CALCULATOR STARTS HERE **
-buttonElements.forEach((button) => {
-  button.addEventListener("click", (event) => {
-    const clickedButtonValue = event.target.value;
+const handleButtonPress = (
+  buttonElements,
+  outputCalcArea,
+  outputEqualsArea,
+  outputTotalArea,
+  previousCalcArea
+) => {
+  let currentCalculation = "";
+  let currentNumber = "";
+  let currentTotal = "";
+  let previousTotal = "";
+  let displayCalculation = "";
+  let bracketOpen = false;
 
-    // if there is already a total value stored, save it 
-    if (currentTotal != "") {
-      previousCalculation = currentCalculation;
-      previousTotal = currentTotal;
-      currentTotal = "";
-      previousCalcArea.innerHTML = `${formatDisplayCalculation(
-        displayCalculation
-      )} = ${previousTotal}`;
-      clearDisplay();
-      bracketClosed = true;
+  buttonElements.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      const clickedButtonValue = event.target.value;
 
-      // if there is already a total value AND the user hits an operator
-      if (event.target.className == "calc__button calc__operator") {
-        currentNumber = previousTotal;
+      // if there is already a total value stored, save it
+      if (currentTotal != "") {
+        previousCalculation = currentCalculation;
+        previousTotal = currentTotal;
         currentTotal = "";
-        clearDisplay();
-        displayCalculation = previousTotal;
-        outputCalcArea.innerHTML = displayCalculation;
-      } else {
-        currentNumber = "";
-        currentTotal = "";
-        clearDisplay();
+        previousCalcArea.innerHTML = `${formatDisplayCalculation(
+          displayCalculation
+        )} = ${previousTotal}`;
+        clearDisplay(
+          outputCalcArea,
+          outputEqualsArea,
+          outputTotalArea
+        );
+        bracketOpen = false;
+
+        // if there is already a total value AND the user hits an operator
+        if (event.target.className == "calc__button calc__operator") {
+          currentNumber = previousTotal;
+          currentTotal = "";
+          displayCalculation = clearDisplay(
+            outputCalcArea,
+            outputEqualsArea,
+            outputTotalArea
+          );
+          displayCalculation = previousTotal;
+          outputCalcArea.innerHTML = displayCalculation;
+        } else {
+          currentNumber = "";
+          currentTotal = "";
+          displayCalculation = clearDisplay(
+            outputCalcArea,
+            outputEqualsArea,
+            outputTotalArea
+          );
+        }
       }
-    }
 
-    //if user clicks AC button, clear all data
-    if (clickedButtonValue == "delete") {
-      currentNumber = "";
-      currentCalculation = "";
-      currentTotal = "";
-      clearDisplay();
-    }
+      //if user clicks AC button, clear all data
+      if (clickedButtonValue == "delete") {
+        currentNumber = "";
+        currentCalculation = "";
+        currentTotal = "";
+        displayCalculation = clearDisplay(
+          outputCalcArea,
+          outputEqualsArea,
+          outputTotalArea
+        );
+        bracketOpen = false;
+      }
 
-    //if user hits equals button
-    else if (clickedButtonValue == "=") {
-      //  add the NUMBER to the CALCULATION
-      currentCalculation += currentNumber;
+      //if user hits equals button
+      else if (clickedButtonValue == "=") {
+        //  add the NUMBER to the CALCULATION
+        currentCalculation += currentNumber;
 
-      //  run the expression of CALCULATION and store it in TOTAL
-      console.log("to be calculated = " + currentCalculation);
-      let calculationAfterBrackets = calculateBrackets(currentCalculation);
-      console.log("after brackets = " + calculationAfterBrackets);
-      currentTotal = calculate(
-        parseStringAsCalculationArray(calculationAfterBrackets)
-      );
+        //  run the expression of CALCULATION and store it in TOTAL
+        let calculationAfterBrackets = calculateBrackets(currentCalculation);
+        currentTotal = calculate(
+          parseStringAsCalculationArray(calculationAfterBrackets)
+        );
 
-      outputTotalArea.innerHTML = Number(currentTotal).toLocaleString();
-      outputEqualsArea.innerHTML = "=";
-      // and clear the current calculation
-      currentCalculation = "";
-      bracketClosed = true;
-    }
+        outputTotalArea.innerHTML = Number(currentTotal).toLocaleString();
+        outputEqualsArea.innerHTML = "=";
+        // and clear the current calculation
+        currentCalculation = "";
+        bracketOpen = false;
+      }
 
-    // if user presses brackets
-    else if (clickedButtonValue == "brackets") {
-      processBrackets();
-      console.log("number that's about to be processed =" + currentNumber);
-      currentNumber = allowBracketAsMultiplier(currentNumber);
-      outputCalcArea.innerHTML = formatDisplayCalculation(displayCalculation);
-    }
+      // if user presses brackets
+      else if (clickedButtonValue == "brackets") {
+        bracketOpen = openAndCloseBrackets(bracketOpen);
+        currentNumber, (displayCalculation += processBrackets(bracketOpen));
+        currentNumber = allowBracketAsMultiplier(currentNumber);
+        outputCalcArea.innerHTML = formatDisplayCalculation(displayCalculation);
+      }
 
-    //if it's percent
-    else if (clickedButtonValue == "%") {
-      //print it on screen
-      displayCalculation += clickedButtonValue;
-      outputCalcArea.innerHTML = formatDisplayCalculation(displayCalculation);
-      currentNumber = calculatePercentage(currentCalculation, currentNumber);
-    }
+      //if it's percent
+      else if (clickedButtonValue == "%") {
+        //print it on screen
+        displayCalculation += clickedButtonValue;
+        outputCalcArea.innerHTML = formatDisplayCalculation(displayCalculation);
+        currentNumber = calculatePercentage(currentCalculation, currentNumber);
+      }
 
-    //if it's an operator
-    else if (event.target.className == "calc__button calc__operator") {
-      currentCalculation += currentNumber;
-      currentCalculation += clickedButtonValue;
-      currentNumber = "";
-      displayCalculation += clickedButtonValue;
-      outputCalcArea.innerHTML = formatDisplayCalculation(displayCalculation);
-    } else {
-      //if it's a number, add it to NUMBER string
-      currentNumber += clickedButtonValue;
-      displayCalculation += clickedButtonValue;
-      outputCalcArea.innerHTML = formatDisplayCalculation(displayCalculation);
-    }
+      //if it's an operator
+      else if (event.target.className == "calc__button calc__operator") {
+        currentCalculation += currentNumber;
+        currentCalculation += clickedButtonValue;
+        currentNumber = "";
+        displayCalculation += clickedButtonValue;
+        outputCalcArea.innerHTML = formatDisplayCalculation(displayCalculation);
+      } else {
+        //if it's a number, add it to NUMBER string
+        currentNumber += clickedButtonValue;
+        displayCalculation += clickedButtonValue;
+        outputCalcArea.innerHTML = formatDisplayCalculation(displayCalculation);
+      }
+    });
   });
-});
+};
+
+handleButtonPress(
+  document.querySelectorAll(".calc__button"),
+  document.getElementById("output-display-calculation"),
+  document.getElementById("output-display-equals"),
+  document.getElementById("output-display-total"),
+  document.getElementById("output-prev-total")
+);
