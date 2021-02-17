@@ -1,20 +1,12 @@
-name: integration-tests
+name: End-to-end tests
 on: [push]
 jobs:
   cypress-run:
     runs-on: ubuntu-16.04
     steps:
-      - name: Cypress.io
-        uses: cypress-io/github-action@v2.8.2
       - name: Checkout
-        uses: actions/checkout@v1
-      # https://github.com/cypress-io/github-action
+        uses: actions/checkout@v2
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v2
-        with:
-          record: true
-          start: npm run serve
-          working-directory: frontend
-        env:
-          # pass the Dashboard record key as an environment variable
-          CYPRESS_RECORD_KEY: e63a7946-58c1-48bf-9a6b-c0c832a5g137
