@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "e2e": "cypress open",
+    "cy:run": "cypress run",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
