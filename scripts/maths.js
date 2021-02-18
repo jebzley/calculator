@@ -12,7 +12,7 @@
 
 const parseStringAsCalculationArray = (calcString) => {
   calcArray = [];
-  let currentNum = "";git
+  let currentNum = "";
   calcString.split("").forEach((char, index, arr) => {
     if ("()^*/+-".indexOf(char) > -1) calcArray.push(char);
     else if (!isNaN(char) && arr[index + 1] == ".") {
